@@ -54,7 +54,7 @@ export function UserDashboard() {
         recipient,
       })
 
-      setTransactions((prev) => [newTransaction, ...prev])
+      await loadTransactions() 
       setAmount("")
       setRecipient("")
       setDescription("")
