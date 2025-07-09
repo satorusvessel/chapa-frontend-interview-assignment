@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
+import { mockApi, type SystemStats } from "@/services/mock-api"
 import type { User } from "@/contexts/auth-context"
 import { AdminDashboard } from "./admin-dashbaord"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,11 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Crown, TrendingUp, Users, DollarSign, Clock, Plus, Trash2, Loader2, Shield } from "lucide-react"
 
 export function SuperAdminDashboard() {
-  const [systemStats, setSystemStats] = useState<{
-    totalUsers: number
-    activeUsers: number
-    totalVolume: number
-  } | null>(null)
+  const [systemStats, setSystemStats] = useState<SystemStats | null>(null)
   const [admins, setAdmins] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -35,7 +32,9 @@ export function SuperAdminDashboard() {
 
   const loadData = async () => {
     try {
-   
+      const [statsData, usersData] = await Promise.all([mockApi.getSystemStats(), mockApi.getAllUsers()])
+      setSystemStats(statsData)
+      setAdmins(usersData.filter((u) => u.role === "admin"))
     } catch (error) {
       console.error("Failed to load data:", error)
     } finally {
@@ -49,7 +48,11 @@ export function SuperAdminDashboard() {
     setMessage("")
 
     try {
-     
+      const newAdmin = await mockApi.addAdmin({
+        name: newAdminName,
+        email: newAdminEmail,
+      })
+      setAdmins((prev) => [...prev, newAdmin])
       setNewAdminName("")
       setNewAdminEmail("")
       setMessage("Admin added successfully!")
@@ -62,10 +65,11 @@ export function SuperAdminDashboard() {
 
   const handleRemoveAdmin = async (adminId: string) => {
     try {
-     
+      const success = await mockApi.removeAdmin(adminId)
+      if (success) {
         setAdmins((prev) => prev.filter((a) => a.id !== adminId))
         setMessage("Admin removed successfully!")
-    
+      }
     } catch (error) {
       setMessage("Failed to remove admin. Please try again.")
     }
@@ -89,7 +93,7 @@ export function SuperAdminDashboard() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {/* <div className="text-2xl font-bold">{systemStats?.totalPayments.toLocaleString()}</div> */}
+            <div className="text-2xl font-bold">{systemStats?.totalPayments.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">All time</p>
           </CardContent>
         </Card>
@@ -122,7 +126,7 @@ export function SuperAdminDashboard() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {/* <div className="text-2xl font-bold">{systemStats?.pendingTransactions}</div> */}
+            <div className="text-2xl font-bold">{systemStats?.pendingTransactions}</div>
             <p className="text-xs text-muted-foreground">Pending transactions</p>
           </CardContent>
         </Card>
