@@ -25,7 +25,8 @@ export function LoginForm() {
     email: false,
     password: false,
   })
-  const { login, isLoading } = useAuth()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { login } = useAuth()
   const { toast } = useToast()
 
   const validateEmail = (email: string): string | undefined => {
@@ -86,6 +87,8 @@ export function LoginForm() {
       return
     }
 
+    setIsSubmitting(true)
+
     const success = await login(email, password)
     if (!success) {
       toast({
@@ -93,12 +96,15 @@ export function LoginForm() {
         title: "Login Failed",
         description: "Invalid email or password. Please check your credentials and try again.",
       })
+      // Don't reset form - keep email and password so user can try again
     } else {
       toast({
         title: "Login Successful",
         description: "Welcome to PayFlow! You have been successfully logged in.",
       })
     }
+
+    setIsSubmitting(false)
   }
 
   const isFormValid = !errors.email && !errors.password && email && password
@@ -152,6 +158,7 @@ export function LoginForm() {
                           : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
                     }`}
                     placeholder="Enter your email"
+                    disabled={isSubmitting}
                   />
                   {touched.email && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -192,11 +199,13 @@ export function LoginForm() {
                           : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
                     }`}
                     placeholder="Enter your password"
+                    disabled={isSubmitting}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    disabled={isSubmitting}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -212,11 +221,11 @@ export function LoginForm() {
               <Button
                 type="submit"
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isLoading || !isFormValid}
+                disabled={isSubmitting || !isFormValid}
               >
-                {isLoading ? (
+                {isSubmitting ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
                     Signing In...
                   </>
                 ) : (

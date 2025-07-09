@@ -63,7 +63,7 @@ export function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     )
   }
@@ -145,7 +145,7 @@ export function AdminDashboard() {
                       className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all duration-200"
                     >
                       {updatingUser === user.id ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2 className="h-4 w-4 animate-spin text-white" />
                       ) : user.isActive ? (
                         <>
                           <UserX className="h-4 w-4 mr-1" />

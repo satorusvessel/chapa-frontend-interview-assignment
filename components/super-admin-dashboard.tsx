@@ -93,7 +93,7 @@ export function SuperAdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     )
   }
@@ -185,7 +185,7 @@ export function SuperAdminDashboard() {
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
                 disabled={submitting}
               >
-                {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />}
                 <Plus className="mr-2 h-4 w-4" />
                 Add Admin
               </Button>
