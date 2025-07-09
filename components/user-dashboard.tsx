@@ -54,7 +54,7 @@ export function UserDashboard() {
         recipient,
       })
 
-      await loadTransactions() 
+      await loadTransactions() // Reload transactions from API instead of direct state update
       setAmount("")
       setRecipient("")
       setDescription("")
@@ -96,7 +96,7 @@ export function UserDashboard() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Wallet Balance */}
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Wallet Balance</CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
@@ -108,7 +108,7 @@ export function UserDashboard() {
         </Card>
 
         {/* Quick Stats */}
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
             <Send className="h-4 w-4 text-muted-foreground" />
@@ -122,7 +122,7 @@ export function UserDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Transaction Form */}
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader>
             <CardTitle>Send Payment</CardTitle>
             <CardDescription>Initiate a new transaction</CardDescription>
@@ -166,7 +166,11 @@ export function UserDashboard() {
                   <AlertDescription>{message}</AlertDescription>
                 </Alert>
               )}
-              <Button type="submit" className="w-full" disabled={submitting}>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                disabled={submitting}
+              >
                 {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Send Payment
               </Button>
@@ -175,7 +179,7 @@ export function UserDashboard() {
         </Card>
 
         {/* Recent Transactions */}
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader>
             <CardTitle>Recent Transactions</CardTitle>
             <CardDescription>Your latest payment activity</CardDescription>

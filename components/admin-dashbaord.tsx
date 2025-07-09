@@ -59,7 +59,7 @@ export function AdminDashboard() {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -70,7 +70,7 @@ export function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Payment Volume</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -81,7 +81,7 @@ export function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Rate</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
@@ -96,7 +96,7 @@ export function AdminDashboard() {
       </div>
 
       {/* Users Management */}
-      <Card>
+      <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
         <CardHeader>
           <CardTitle>User Management</CardTitle>
           <CardDescription>Manage user accounts and their status</CardDescription>
@@ -129,6 +129,7 @@ export function AdminDashboard() {
                       size="sm"
                       onClick={() => handleToggleUserStatus(user.id)}
                       disabled={updatingUser === user.id}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all duration-200"
                     >
                       {updatingUser === user.id ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -153,7 +154,7 @@ export function AdminDashboard() {
       </Card>
 
       {/* Payment Summary */}
-      <Card>
+      <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
         <CardHeader>
           <CardTitle>Payment Summary</CardTitle>
           <CardDescription>Overview of user payment activity</CardDescription>

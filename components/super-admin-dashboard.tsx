@@ -87,7 +87,7 @@ export function SuperAdminDashboard() {
     <div className="space-y-6">
       {/* System Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Payments</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -98,7 +98,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Users</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -109,7 +109,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Volume</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -120,7 +120,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
@@ -134,7 +134,7 @@ export function SuperAdminDashboard() {
 
       {/* Admin Management */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Crown className="h-5 w-5" />
@@ -170,7 +170,11 @@ export function SuperAdminDashboard() {
                   <AlertDescription>{message}</AlertDescription>
                 </Alert>
               )}
-              <Button type="submit" className="w-full" disabled={submitting}>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                disabled={submitting}
+              >
                 {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <Plus className="mr-2 h-4 w-4" />
                 Add Admin
@@ -179,7 +183,7 @@ export function SuperAdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-sm bg-white/60 border-white/20 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Shield className="h-5 w-5" />
@@ -228,7 +232,9 @@ export function SuperAdminDashboard() {
 
       {/* Include all Admin features */}
       <div className="border-t pt-6">
-        <h2 className="text-lg font-semibold mb-4">Admin Features</h2>
+        <h2 className="text-lg font-semibold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Admin Features
+        </h2>
         <AdminDashboard />
       </div>
     </div>
