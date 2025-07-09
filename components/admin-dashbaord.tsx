@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { mockApi, type PaymentSummary } from "@/services/mock-api"
 import type { User } from "@/contexts/auth-context"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,11 +11,7 @@ import { Users, DollarSign, Activity, Loader2, UserCheck, UserX } from "lucide-r
 
 export function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([])
-  const [paymentSummary, setPaymentSummary] = useState<{
-    user: User
-    totalSent: number
-    totalReceived: number
-  }[]>([])
+  const [paymentSummary, setPaymentSummary] = useState<PaymentSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [updatingUser, setUpdatingUser] = useState<string | null>(null)
 
@@ -23,30 +20,30 @@ export function AdminDashboard() {
   }, [])
 
   const loadData = async () => {
-    // try {
-    //   const [usersData, summaryData] = await Promise.all([mockApi.getAllUsers(), mockApi.getPaymentSummary()])
-    //   setUsers(usersData.filter((u) => u.role === "user"))
-    //   setPaymentSummary(summaryData)
-    // } catch (error) {
-    //   console.error("Failed to load data:", error)
-    // } finally {
-    //   setLoading(false)
-    // }
+    try {
+      const [usersData, summaryData] = await Promise.all([mockApi.getAllUsers(), mockApi.getPaymentSummary()])
+      setUsers(usersData.filter((u) => u.role === "user"))
+      setPaymentSummary(summaryData)
+    } catch (error) {
+      console.error("Failed to load data:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleToggleUserStatus = async (userId: string) => {
     setUpdatingUser(userId)
-    // try {
-    //   const updatedUser = await mockApi.toggleUserStatus(userId)
-    //   setUsers((prev) => prev.map((u) => (u.id === userId ? updatedUser : u)))
-    // } catch (error) {
-    //   console.error("Failed to update user status:", error)
-    // } finally {
-    //   setUpdatingUser(null)
-    // }
+    try {
+      const updatedUser = await mockApi.toggleUserStatus(userId)
+      setUsers((prev) => prev.map((u) => (u.id === userId ? updatedUser : u)))
+    } catch (error) {
+      console.error("Failed to update user status:", error)
+    } finally {
+      setUpdatingUser(null)
+    }
   }
 
-  const totalUsers = 100 //hardcode
+  const totalUsers = users.length
   const activeUsers = users.filter((u) => u.isActive).length
   const totalVolume = paymentSummary.reduce((sum, p) => sum + p.totalSent + p.totalReceived, 0)
 
@@ -172,14 +169,14 @@ export function AdminDashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* {paymentSummary.map((summary) => (
+              {paymentSummary.map((summary) => (
                 <TableRow key={summary.userId}>
                   <TableCell className="font-medium">{summary.userName}</TableCell>
                   <TableCell className="text-red-600">${summary.totalSent.toFixed(2)}</TableCell>
                   <TableCell className="text-green-600">${summary.totalReceived.toFixed(2)}</TableCell>
                   <TableCell>{summary.transactionCount}</TableCell>
                 </TableRow>
-              ))} */}
+              ))}
             </TableBody>
           </Table>
         </CardContent>
