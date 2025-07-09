@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/auth-context"
+import { mockApi, type Transaction } from "@/services/mock-api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,15 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function UserDashboard() {
   const { user } = useAuth()
-  const [transactions, setTransactions] = useState<{
-    id: string
-    amount: number
-    type: string
-    description: string
-    recipient: string
-    status: string
-    createdAt: string
-  }[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState("")
@@ -37,28 +30,9 @@ export function UserDashboard() {
     loadTransactions()
   }, [])
 
-  const loadTransactions =  () => {
+  const loadTransactions = async () => {
     try {
-      const data = [
-        {
-          id: "1",
-          amount: 100,
-          type: "sent",
-          description: "Payment for services",
-          recipient: "recipient1",
-          status: "completed",
-          createdAt: "2023-08-15T12:00:00Z",
-        },
-        {
-          id: "2",
-          amount: 50,
-          type: "received",
-          description: "Salary",
-          recipient: "recipient2",
-          status: "pending",
-          createdAt: "2023-08-14T15:30:00Z",
-        },
-      ]
+      const data = await mockApi.getUserTransactions(user!.id)
       setTransactions(data)
     } catch (error) {
       console.error("Failed to load transactions:", error)
@@ -73,15 +47,14 @@ export function UserDashboard() {
     setMessage("")
 
     try {
-      const newTransaction = {
-        id: "3",
+      const newTransaction = await mockApi.submitTransaction({
         amount: Number.parseFloat(amount),
         type: "sent",
         description,
         recipient,
-      }
+      })
 
-    //   setTransactions((prev) => [newTransaction, ...prev])
+      setTransactions((prev) => [newTransaction, ...prev])
       setAmount("")
       setRecipient("")
       setDescription("")
@@ -224,7 +197,7 @@ export function UserDashboard() {
                       )}
                       <div>
                         <p className="text-sm font-medium">{transaction.description}</p>
-                        {/* <p className="text-xs text-gray-500">{new Date(transaction.date).toLocaleDateString()}</p> */}
+                        <p className="text-xs text-gray-500">{new Date(transaction.date).toLocaleDateString()}</p>
                       </div>
                     </div>
                     <div className="text-right">
