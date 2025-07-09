@@ -93,6 +93,11 @@ export function LoginForm() {
         title: "Login Failed",
         description: "Invalid email or password. Please check your credentials and try again.",
       })
+    } else {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to PayFlow! You have been successfully logged in.",
+      })
     }
   }
 

@@ -11,15 +11,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import { useToast } from "@/hooks/use-toast"
 import { Wallet, Send, ArrowUpRight, ArrowDownLeft, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function UserDashboard() {
   const { user } = useAuth()
+  const { toast } = useToast()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-  const [message, setMessage] = useState("")
 
   // Transaction form state
   const [amount, setAmount] = useState("")
@@ -44,7 +44,6 @@ export function UserDashboard() {
   const handleSubmitTransaction = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    setMessage("")
 
     try {
       const newTransaction = await mockApi.submitTransaction({
@@ -58,9 +57,16 @@ export function UserDashboard() {
       setAmount("")
       setRecipient("")
       setDescription("")
-      setMessage("Transaction submitted successfully!")
+      toast({
+        title: "Payment Sent Successfully",
+        description: `Payment of $${newTransaction.amount.toFixed(2)} to ${recipient} has been submitted.`,
+      })
     } catch (error) {
-      setMessage("Failed to submit transaction. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Payment Failed",
+        description: "Failed to submit transaction. Please try again.",
+      })
     } finally {
       setSubmitting(false)
     }
@@ -161,11 +167,6 @@ export function UserDashboard() {
                   required
                 />
               </div>
-              {message && (
-                <Alert>
-                  <AlertDescription>{message}</AlertDescription>
-                </Alert>
-              )}
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"

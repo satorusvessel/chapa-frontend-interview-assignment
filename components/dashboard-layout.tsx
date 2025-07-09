@@ -5,6 +5,7 @@ import type React from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { useToast } from "@/hooks/use-toast"
 import { LogOut, User, Shield, Crown, CreditCard } from "lucide-react"
 
 interface DashboardLayoutProps {
@@ -13,6 +14,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, logout } = useAuth()
+  const { toast } = useToast()
 
   const getRoleIcon = () => {
     switch (user?.role) {
@@ -40,6 +42,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     }
   }
 
+  const handleLogout = () => {
+    logout()
+    toast({
+      title: "Logged Out Successfully",
+      description: "You have been securely logged out of PayFlow.",
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 relative">
       {/* Background decorative elements */}
@@ -49,7 +59,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-blue-300/5 to-purple-300/5 rounded-full blur-3xl"></div>
       </div>
 
-      <header className="relative z-10 bg-white/80 backdrop-blur-sm shadow-sm border-b border-white/20">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
@@ -73,7 +83,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-white/60 backdrop-blur-sm border-white/20 hover:bg-white/80 transition-all duration-200"
               >
                 <LogOut className="h-4 w-4 mr-2" />

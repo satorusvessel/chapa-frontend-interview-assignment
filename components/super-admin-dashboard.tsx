@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useToast } from "@/hooks/use-toast"
 import { Crown, TrendingUp, Users, DollarSign, Clock, Plus, Trash2, Loader2, Shield } from "lucide-react"
 
 export function SuperAdminDashboard() {
@@ -20,7 +20,7 @@ export function SuperAdminDashboard() {
   const [admins, setAdmins] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
-  const [message, setMessage] = useState("")
+  const { toast } = useToast()
 
   // Add admin form state
   const [newAdminName, setNewAdminName] = useState("")
@@ -45,7 +45,6 @@ export function SuperAdminDashboard() {
   const handleAddAdmin = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    setMessage("")
 
     try {
       const newAdmin = await mockApi.addAdmin({
@@ -55,23 +54,39 @@ export function SuperAdminDashboard() {
       setAdmins((prev) => [...prev, newAdmin])
       setNewAdminName("")
       setNewAdminEmail("")
-      setMessage("Admin added successfully!")
+      toast({
+        title: "Admin Added Successfully",
+        description: `${newAdmin.name} has been added as a new admin.`,
+      })
     } catch (error) {
-      setMessage("Failed to add admin. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Failed to Add Admin",
+        description: "Failed to add admin. Please try again.",
+      })
     } finally {
       setSubmitting(false)
     }
   }
 
   const handleRemoveAdmin = async (adminId: string) => {
+    const admin = admins.find((a) => a.id === adminId)
+
     try {
       const success = await mockApi.removeAdmin(adminId)
       if (success) {
         setAdmins((prev) => prev.filter((a) => a.id !== adminId))
-        setMessage("Admin removed successfully!")
+        toast({
+          title: "Admin Removed Successfully",
+          description: `${admin?.name} has been removed from admin role.`,
+        })
       }
     } catch (error) {
-      setMessage("Failed to remove admin. Please try again.")
+      toast({
+        variant: "destructive",
+        title: "Failed to Remove Admin",
+        description: "Failed to remove admin. Please try again.",
+      })
     }
   }
 
@@ -165,11 +180,6 @@ export function SuperAdminDashboard() {
                   required
                 />
               </div>
-              {message && (
-                <Alert>
-                  <AlertDescription>{message}</AlertDescription>
-                </Alert>
-              )}
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"

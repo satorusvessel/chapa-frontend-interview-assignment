@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useToast } from "@/hooks/use-toast"
 import { Users, DollarSign, Activity, Loader2, UserCheck, UserX } from "lucide-react"
 
 export function AdminDashboard() {
@@ -14,6 +15,7 @@ export function AdminDashboard() {
   const [paymentSummary, setPaymentSummary] = useState<PaymentSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [updatingUser, setUpdatingUser] = useState<string | null>(null)
+  const { toast } = useToast()
 
   useEffect(() => {
     loadData()
@@ -33,11 +35,22 @@ export function AdminDashboard() {
 
   const handleToggleUserStatus = async (userId: string) => {
     setUpdatingUser(userId)
+    const user = users.find((u) => u.id === userId)
+    const action = user?.isActive ? "deactivated" : "activated"
+
     try {
       const updatedUser = await mockApi.toggleUserStatus(userId)
       setUsers((prev) => prev.map((u) => (u.id === userId ? updatedUser : u)))
+      toast({
+        title: `User ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+        description: `${updatedUser.name} has been successfully ${action}.`,
+      })
     } catch (error) {
-      console.error("Failed to update user status:", error)
+      toast({
+        variant: "destructive",
+        title: "Action Failed",
+        description: `Failed to ${action.slice(0, -1)} user. Please try again.`,
+      })
     } finally {
       setUpdatingUser(null)
     }
