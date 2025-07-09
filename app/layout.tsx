@@ -3,12 +3,13 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/auth-context"
+import { Toaster } from "@/components/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Payment Service Provider Dashboard",
-  description: "Role-based dashboard for payment management",
+  title: "PayFlow - Payment Service Provider Dashboard",
+  description: "Secure role-based dashboard for payment management",
 }
 
 export default function RootLayout({
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   )
