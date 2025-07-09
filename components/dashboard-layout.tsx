@@ -84,7 +84,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="bg-white/60 backdrop-blur-sm border-white/20 hover:bg-white/80 transition-all duration-200"
+                className="bg-white/60 backdrop-blur-sm border-white/20 hover:bg-white/80 transition-all duration-200 text-red-500 border border-2 border-gray-300"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout

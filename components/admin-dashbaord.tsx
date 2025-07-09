@@ -142,7 +142,7 @@ export function AdminDashboard() {
                       size="sm"
                       onClick={() => handleToggleUserStatus(user.id)}
                       disabled={updatingUser === user.id}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transition-all duration-200"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:text-white text-white transition-all duration-200 w-32"
                     >
                       {updatingUser === user.id ? (
                         <Loader2 className="h-4 w-4 animate-spin text-white" />
